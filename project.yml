@@ -1,0 +1,79 @@
+# XcodeGen spec for VOID. Run ./setup.sh to turn this into VOID.xcodeproj.
+name: VOID
+options:
+  bundleIdPrefix: com.adityainnovates
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  MLXSwift:
+    url: https://github.com/ml-explore/mlx-swift
+    minorVersion: 0.32.3
+  MLXSwiftLM:
+    url: https://github.com/ml-explore/mlx-swift-lm
+    minorVersion: 3.32.3
+  SwiftHuggingFace:
+    url: https://github.com/huggingface/swift-huggingface
+    from: 0.9.0
+  SwiftTransformers:
+    url: https://github.com/huggingface/swift-transformers
+    from: 1.3.0
+  FluidAudio:
+    url: https://github.com/FluidInference/FluidAudio.git
+    minorVersion: 0.18.2
+
+targets:
+  VOID:
+    type: application
+    platform: macOS
+    sources:
+      - path: VOID
+        excludes:
+          - "Info.plist"
+          - "VOID.entitlements"
+    info:
+      path: VOID/Info.plist
+      properties:
+        CFBundleDisplayName: VOID
+        CFBundleName: VOID
+        LSUIElement: true
+        LSMinimumSystemVersion: "$(MACOSX_DEPLOYMENT_TARGET)"
+        NSMicrophoneUsageDescription: "VOID listens when you talk to it. Audio never leaves your Mac."
+    entitlements:
+      path: VOID/VOID.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.network.client: true
+        com.apple.security.device.audio-input: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.adityainnovates.void
+        PRODUCT_NAME: VOID
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        DEVELOPMENT_TEAM: ""
+        ENABLE_HARDENED_RUNTIME: NO
+        GENERATE_INFOPLIST_FILE: NO
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+    dependencies:
+      - package: MLXSwift
+        product: MLX
+      - package: MLXSwiftLM
+        product: MLXLLM
+      - package: MLXSwiftLM
+        product: MLXLMCommon
+      - package: MLXSwiftLM
+        product: MLXHuggingFace
+      - package: SwiftHuggingFace
+        product: HuggingFace
+      - package: SwiftTransformers
+        product: Tokenizers
+      - package: FluidAudio
+        product: FluidAudio

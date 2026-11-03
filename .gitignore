@@ -1,0 +1,7 @@
+VOID.xcodeproj/
+build/
+build.log
+.DS_Store
+*.xcuserstate
+xcuserdata/
+.swiftpm/
