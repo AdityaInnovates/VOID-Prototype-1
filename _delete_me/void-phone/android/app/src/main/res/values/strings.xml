@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VOID</string>
+    <string name="accessibility_label">VOID control</string>
+    <string name="accessibility_description">Lets VOID tap buttons and open screens in other apps when you ask it to. It never acts on its own.</string>
+</resources>

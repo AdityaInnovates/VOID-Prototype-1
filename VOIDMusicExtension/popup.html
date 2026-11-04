@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font: 13px -apple-system, system-ui, sans-serif; width: 260px; margin: 14px; color: #ddd; background: #111; }
+    h1 { font-size: 14px; margin: 0 0 10px; letter-spacing: 0.08em; }
+    label { display: block; color: #999; margin-bottom: 4px; }
+    input { width: 100%; box-sizing: border-box; padding: 6px 8px; border-radius: 6px; border: 1px solid #333;
+            background: #1b1b1b; color: #eee; font: 14px ui-monospace, monospace; letter-spacing: 0.15em; text-transform: uppercase; }
+    button { margin-top: 8px; width: 100%; padding: 6px; border-radius: 6px; border: 0; background: #4f7cff; color: white; cursor: pointer; }
+    #status { margin-top: 10px; color: #8fb3ff; }
+  </style>
+</head>
+<body>
+  <h1>VOID · MUSIC</h1>
+  <label for="code">Pairing code (VOID menu → Copy music pairing code)</label>
+  <input id="code" autocomplete="off" spellcheck="false">
+  <button id="save">Connect</button>
+  <div id="status">…</div>
+  <script src="popup.js"></script>
+</body>
+</html>

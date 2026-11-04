@@ -10,8 +10,10 @@ import MLXLMCommon
 /// the GPU or memory.
 @MainActor
 final class Conversation {
-    private let state: AppState
-    private let reflex: MLXBrain
+    let state: AppState
+    private var reflex: MLXBrain
+    let toolIndex = ToolIndex()
+    private var toolNote: String?
     private var deep: MLXBrain
 
     // Ears and voice.
@@ -19,6 +21,8 @@ final class Conversation {
     private let transcriber = Transcriber()
     private let voice: VoiceInput
     private let speech: SpeechOutput
+    /// Plays and controls YouTube Music in Chrome.
+    let music: MusicController
     private var listening = false
     private var starting = false
     private var stopRequested = false
@@ -36,6 +40,8 @@ final class Conversation {
     private var currentTask: Task<Void, Never>?
     private var idleTask: Task<Void, Never>?
     private var captionToken = 0
+    /// What the model answered the last time it was asked about music, shown in the transcript.
+    private var routerNote: String?
 
     /// The last few exchanges, given to the reflex as context.
     private var recent: [(user: String, void: String)] = []
@@ -49,14 +55,20 @@ final class Conversation {
         self.signal = signal
         self.voice = VoiceInput(signal: signal)
         self.speech = SpeechOutput(signal: signal)
-        self.reflex = MLXBrain(
+        self.speech.setPace(SpeakingPace.saved.rate)
+        self.music = MusicController(state: state)
+        self.reflex = Conversation.makeReflex(ReflexChoice.saved)
+        self.deep = Conversation.makeDeep(state.mode)
+    }
+
+    private static func makeReflex(_ choice: ReflexChoice) -> MLXBrain {
+        MLXBrain(
             name: "reflex",
-            configuration: Models.reflex,
+            configuration: Models.reflexModel(choice),
             instructions: Persona.reflex,
-            parameters: GenerateParameters(maxTokens: 40, temperature: 0.4),
+            parameters: GenerateParameters(maxTokens: 80, temperature: 0.5),
             keepHistory: false
         )
-        self.deep = Conversation.makeDeep(.normal)
     }
 
     private static func makeDeep(_ mode: BrainMode) -> MLXBrain {
@@ -65,7 +77,8 @@ final class Conversation {
             configuration: Models.deep(mode),
             instructions: Persona.deep,
             parameters: GenerateParameters(maxTokens: 360, temperature: 0.7, topP: 0.9),
-            keepHistory: true
+            keepHistory: true,
+            streamExperts: mode == .moeStream
         )
     }
 
@@ -74,12 +87,24 @@ final class Conversation {
     /// Loads everything at launch: both brains, then the ears (Parakeet), then the voice.
     /// The first run downloads about 3 GB of models; after that VOID works offline.
     func warmUp() {
+        music.start()
+        Task { await toolIndex.build() }
         state.phase = .loading
         state.statusLine = "Loading models (first run downloads ~3 GB)…"
         Task {
             do {
-                try await ensureLoaded(reflex, range: 0...0.2)
-                try await ensureLoaded(deep, range: 0.2...0.65)
+                do {
+                    try await ensureLoaded(reflex, range: 0...0.2)
+                } catch where state.reflexChoice != .qwen {
+                    revertReflexToDefault()
+                    try await ensureLoaded(reflex, range: 0...0.2)
+                }
+                do {
+                    try await ensureLoaded(deep, range: 0.2...0.65)
+                } catch where state.mode != .normal {
+                    revertDeepToDefault()
+                    try await ensureLoaded(deep, range: 0.2...0.65)
+                }
             } catch {
                 state.phase = .idle
                 state.statusLine = "Couldn't load models: \(error.localizedDescription)"
@@ -110,6 +135,7 @@ final class Conversation {
             }
             state.activeVoice = loaded
             state.voiceReady = loaded != nil
+            StreamLog.write("voice: asked for \(state.voiceEngine.rawValue), loaded \(loaded?.rawValue ?? "NONE (system voice)")")
 
             state.loadProgress = 1
             state.phase = .idle
@@ -146,6 +172,7 @@ final class Conversation {
         task.cancel()
         currentTask = nil
         state.thinkingDepth = 0
+        state.deepWorking = false
         state.phase = restingPhase
         state.captionVisible = false
     }
@@ -240,9 +267,11 @@ final class Conversation {
         guard state.handsFree else { return }
         switch event {
         case .speechStarted:
+            music.userTalking = true
             if speech.isSpeaking { speech.duck(true) }
             if currentTask == nil { state.phase = .listening }
         case .falseStart:
+            music.userTalking = false
             speech.duck(false)
         case .speechConfirmed:
             // Barge-in: you're talking, so VOID stops.
@@ -262,6 +291,7 @@ final class Conversation {
             state.caption = "Listening…"
             state.captionVisible = true
         case .utterance(let samples, let partial):
+            music.userTalking = false
             speech.duck(false)
             listenTask?.cancel()
             listenTask = Task { [weak self] in
@@ -273,6 +303,7 @@ final class Conversation {
                 }
                 if Task.isCancelled { return }
                 let heard = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                self.music.noteVoice(heard, samples: samples)
                 guard heard.count > 1 else {
                     self.state.phase = self.restingPhase
                     self.state.captionVisible = false
@@ -400,6 +431,8 @@ final class Conversation {
     }
 
     var isBusy: Bool { currentTask != nil || listening }
+    /// A message is being worked on (not merely the microphone being open).
+    var isWorking: Bool { currentTask != nil }
 
     func newConversation() {
         cancel()
@@ -411,16 +444,64 @@ final class Conversation {
         scheduleCaptionHide()
     }
 
+    private func revertDeepToDefault() {
+        state.mode = .normal
+        UserDefaults.standard.set(BrainMode.normal.rawValue, forKey: "deepBrain")
+        deep = Conversation.makeDeep(.normal)
+    }
+
+    private func revertReflexToDefault() {
+        state.reflexChoice = .qwen
+        UserDefaults.standard.set(ReflexChoice.qwen.rawValue, forKey: "reflexModel")
+        reflex = Conversation.makeReflex(.qwen)
+    }
+
+    func setPace(_ pace: SpeakingPace) {
+        state.pace = pace
+        UserDefaults.standard.set(pace.rawValue, forKey: "speakingPace")
+        speech.setPace(pace.rate)
+    }
+
+    func setReflex(_ choice: ReflexChoice) {
+        guard choice != state.reflexChoice else { return }
+        cancel()
+        state.reflexChoice = choice
+        UserDefaults.standard.set(choice.rawValue, forKey: "reflexModel")
+        let old = reflex
+        reflex = Conversation.makeReflex(choice)
+        let fresh = reflex
+        state.phase = .loading
+        state.loadProgress = 0.1
+        state.statusLine = "Switching reflex to \(choice.label)…"
+        Task {
+            await old.unload()
+            do {
+                try await ensureLoaded(fresh, range: 0...0.3)
+                state.phase = .idle
+                setReadyStatus()
+            } catch {
+                let failed = state.reflexChoice
+                let reason = String(describing: error)
+                revertReflexToDefault()
+                try? await ensureLoaded(reflex, range: 0...0.3)
+                state.phase = .idle
+                setReadyStatus()
+                state.statusLine = "\(failed.label) wouldn't load, so I went back to \(state.reflexChoice.label). \(reason)"
+            }
+        }
+    }
+
     func setMode(_ mode: BrainMode) {
         guard mode != state.mode else { return }
         cancel()
         state.mode = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: "deepBrain")
         let old = deep
         deep = Conversation.makeDeep(mode)
         let newBrain = deep
         state.phase = .loading
         state.loadProgress = 0.3
-        state.statusLine = mode == .focus ? "Switching to focus mode (4B)…" : "Switching to normal mode (2B)…"
+        state.statusLine = "Switching deep brain to \(mode.short)…"
         Task {
             // Same VOID, same memory: carry the conversation over to the new brain.
             await newBrain.restore(await old.historySnapshot())
@@ -430,8 +511,16 @@ final class Conversation {
                 state.phase = .idle
                 setReadyStatus()
             } catch {
+                // Go back to the proven default so VOID keeps working.
+                let failed = state.mode
+                let reason = String(describing: error)
+                revertDeepToDefault()
+                let fallback = deep
+                await fallback.restore(await newBrain.historySnapshot())
+                try? await ensureLoaded(fallback, range: 0.3...1)
                 state.phase = .idle
-                state.statusLine = "Couldn't load the deep brain: \(error.localizedDescription)"
+                setReadyStatus()
+                state.statusLine = "\(failed.short) wouldn't load, so I went back to \(state.mode.short). \(reason)"
             }
         }
     }
@@ -481,6 +570,37 @@ final class Conversation {
         state.thinkingDepth = 1
         if state.speakReplies { speech.beginTurn() }
         startPhaseWatcher()
+
+        // Music commands go straight to the music hands, no brains needed.
+        music.noteUserText(text)
+        routerNote = nil
+        toolNote = nil
+        var musicReply = await PhoneController.shared.handle(text)
+        if musicReply == nil { musicReply = await music.handle(text) }
+        if musicReply == nil, music.routerEligible, !Self.mentionsPhone(text), let intent = await routeMusic(text) {
+            if Task.isCancelled { return }
+            musicReply = await music.run(intent)
+        }
+        // Anything else that sounds like a phone or Mac control: search the tool index.
+        if musicReply == nil {
+            musicReply = await routeTools(text)
+        }
+        if Task.isCancelled { return }
+        CommandLog.record(text: text, route: musicReply != nil ? (toolNote ?? routerNote ?? "rules") : "chat")
+        if let reply = musicReply {
+            show(reply)
+            state.messages.append(ChatMessage(role: .void, text: reply, source: .system,
+                                              metrics: "music \(Self.ms(since: started)) ms" + (routerNote.map { " · " + $0 } ?? "") + (toolNote.map { " · " + $0 } ?? "")))
+            remember(user: text, void: reply)
+            await deep.remember(user: text, reply: reply)
+            if Task.isCancelled { return }
+            say(reply)
+            await finishSpeaking()
+            if Task.isCancelled { return }
+            finishTurn()
+            return
+        }
+
         let canUseDeep = !lowMemory
         let forceDeep = canUseDeep && Router.mustGoDeep(text)
 
@@ -507,6 +627,7 @@ final class Conversation {
         if Task.isCancelled { return }
 
         let reflexLabel = "reflex \(reflexMs.map { "\($0) ms" } ?? "–")"
+            + (reflex.prefill.label.map { " (prompt \($0))" } ?? "")
         let reflexAnswered = parser.kind == .answer && !forceDeep && !parser.body.isEmpty
 
         // 2a. Small talk, or no deep brain available: the reflex's line is the answer.
@@ -525,7 +646,7 @@ final class Conversation {
             // The deep brain remembers this too: it's all one VOID.
             await deep.remember(user: text, reply: reply)
             remember(user: text, void: reply)
-            say(reply)
+            sayInPieces(reply)
             await finishSpeaking()
             if Task.isCancelled { return }
             if let stats = speech.turnStats {
@@ -538,15 +659,18 @@ final class Conversation {
         // 2b. Real work: speak the reflex's opening now, then the deep brain carries on
         //     from those exact words, as one reply in one voice.
         let lead: String
-        if parser.kind == .wait && !parser.body.isEmpty {
+        if parser.kind == .wait && !parser.body.isEmpty
+            && !Persona.isGenericLead(parser.body, user: text) {
             lead = parser.body
         } else {
-            lead = Persona.cannedLead()
+            // The reflex gave nothing, or a stock phrase like "Good question".
+            lead = Persona.contextualLead(for: text)
             show(lead)
         }
-        say(lead)
+        sayInPieces(lead)
 
         state.thinkingDepth = 2
+        state.deepWorking = true
         let deepBrain = deep
         let message = ChatMessage(role: .void, text: lead, source: .deep, metrics: reflexLabel)
         state.messages.append(message)
@@ -574,9 +698,22 @@ final class Conversation {
                 let full = Self.join(lead, answer)
                 show(full)
                 updateMessage(message.id, text: full)
-                for sentence in chunker.feed(visible) { say(sentence) }
+                for sentence in chunker.feed(visible) {
+                    if state.deepWorking {
+                        // The real answer starts here: the orb resolves from thinking to speaking.
+                        state.deepWorking = false
+                        state.handoff &+= 1
+                    }
+                    say(sentence)
+                }
             }
-            if !Task.isCancelled, let rest = chunker.flush() { say(rest) }
+            if !Task.isCancelled, let rest = chunker.flush() {
+                if state.deepWorking {
+                    state.deepWorking = false
+                    state.handoff &+= 1
+                }
+                say(rest)
+            }
         } catch {
             if !Task.isCancelled {
                 let note = "Something went wrong in my head: \(error.localizedDescription)"
@@ -595,15 +732,198 @@ final class Conversation {
         let seconds = max(0.001, Date().timeIntervalSince(generationStart))
         let rate = Double(chunks) / seconds
         let firstLabel = firstTokenMs.map { "deep first word \($0) ms" } ?? "no deep output"
-        let brainMetrics = "\(reflexLabel) · \(firstLabel) · ≈\(Int(rate)) tok/s"
+        let deepPrompt = deepBrain.prefill.label.map { " (prompt \($0))" } ?? ""
+        let brainMetrics = "\(reflexLabel) · \(firstLabel)\(deepPrompt) · ≈\(Int(rate)) tok/s"
         updateMetrics(message.id, metrics: brainMetrics)
         state.thinkingDepth = 0
+        state.deepWorking = false
         await finishSpeaking()
         if Task.isCancelled { return }
         if let stats = speech.turnStats {
             updateMetrics(message.id, metrics: brainMetrics + " · " + stats)
         }
         finishTurn()
+    }
+
+    /// Messages about the phone, notifications or texts never go to the music router.
+    static func mentionsPhone(_ text: String) -> Bool {
+        let lower = text.lowercased()
+        if ["notification", "notifs", "message", "text ", "texts", "sms", "phone", "whatsapp", "call ", "alert",
+            "bluetooth", "wifi", "wi-fi", "brightness", "my mac", "the mac", "mac's", "airplane"]
+            .contains(where: { lower.contains($0) }) { return true }
+        return false
+    }
+
+    /// Finds the few tools that fit this message, then asks the small model to pick one and
+    /// fill in its arguments. Chatting never reaches the model: the search score has to clear
+    /// a threshold first. The score shows in the transcript so the threshold can be tuned.
+    private func routeTools(_ text: String) async -> String? {
+        if let overview = Self.capabilityAnswer(text) { return overview }
+        // Search first (cheap). Only load the model if something matched well enough to need it.
+        guard let plan = await planTool(text), let call = plan.call else { return nil }
+        return await PhoneController.shared.execute(call.spec, call.args, said: text)
+    }
+
+    /// "open watsapp": an app or site name follows "open", which is evidence enough for mac.open.
+    static func opensSomething(_ text: String) -> Bool {
+        let words = MusicIntent.normalizeCommand(text).split(separator: " ").map(String.init)
+        guard words.count >= 2, words[0] == "open" else { return false }
+        return !["up", "the", "a", "an", "my", "your", "it", "this", "that", "door", "window"].contains(words[1])
+    }
+
+    /// "what is bluetooth", "how does wifi work", "my phone is so slow": talk, never a tool call.
+    static func isInformational(_ text: String) -> Bool {
+        let t = MusicIntent.normalizeCommand(text)
+        let always = ["how does ", "how do ", "how to ", "why ", "explain ", "define ", "should i ", "is a ", "is an ",
+                      "tell me about ", "what does ", "what's the difference", "whats the difference",
+                      "what is the difference", "who ", "tell me a ", "tell me something"]
+        if always.contains(where: { t.hasPrefix($0) }) { return true }
+        if ["what is ", "what's ", "whats ", "what are "].contains(where: { t.hasPrefix($0) }) {
+            let personal = [" my ", "battery", "volume", "brightness", "clipboard", "notification", "message", "status",
+                            "playing", "apps", "number", "up with"]
+            if !personal.contains(where: { t.contains($0) }) { return true }
+        }
+        for subject in ["my phone ", "my mac ", "my laptop ", "my computer "] {
+            for verb in ["is ", "was ", "has ", "keeps ", "feels ", "seems "] where t.hasPrefix(subject + verb) { return true }
+        }
+        // Hinglish questions: "bluetooth kya hota hai", "kaise kaam karta hai".
+        let words = Set(t.split(separator: " ").map(String.init))
+        if !words.isDisjoint(with: ["kya", "kyun", "kyu", "kaise", "kab"]) { return true }
+        return false
+    }
+
+    /// What the tool search and planner decided for a message, without running anything.
+    struct ToolPlan {
+        var candidates: [ToolIndex.Match]
+        var topScore: Double
+        var call: ToolPlanner.Call?
+        var raw: String
+    }
+
+    /// Searches the tool index, and if something fits well enough asks the small model to pick one.
+    /// `runModel: false` stops after the search, for fast offline checks.
+    func planTool(_ text: String, runModel: Bool = true) async -> ToolPlan? {
+        // Questions and remarks are chat, not commands.
+        if Self.isInformational(text) {
+            toolNote = "tools: informational question"
+            return ToolPlan(candidates: [], topScore: 0, call: nil, raw: "")
+        }
+        // "on my mac" only searches Mac tools; "on my phone" only phone tools.
+        let lower = text.lowercased()
+        let macWords = ["mac", "macbook", "laptop", "computer"].contains { lower.contains($0) }
+        let phoneWords = ["phone", "mobile", "fone"].contains { lower.contains($0) }
+        var targets: Set<ToolSpec.Target>? = macWords && !phoneWords ? [.mac] : (phoneWords && !macWords ? [.phone] : nil)
+        // "open safari" with no device named means this Mac.
+        if targets == nil, MusicIntent.normalizeCommand(text).hasPrefix("open ") { targets = [.mac] }
+
+        let found = await toolIndex.search(text, limit: 6, targets: targets)
+        // A tool needs real evidence: a shared action word, or a very close meaning.
+        let candidates = found.filter { m in
+            (m.score >= ToolIndex.threshold && m.evidence >= 1) || m.score >= 0.9
+                || (m.spec.id == "mac.open" && m.score >= 0.6 && Self.opensSomething(text))
+                || (m.evidence >= 2 && m.score >= 0.45)
+        }.prefix(4).map { $0 }
+        guard let top = candidates.first else {
+            if let best = found.first {
+                toolNote = "tools: none (best \(best.spec.id) \(String(format: "%.2f", best.score)))"
+                return ToolPlan(candidates: [], topScore: 0, call: nil,
+                                raw: "best \(best.spec.id) \(String(format: "%.2f", best.score)), evidence \(best.evidence)")
+            }
+            return nil
+        }
+        // A bare verb ("call") with nothing to act on isn't a command yet.
+        if MusicIntent.normalizeCommand(text).split(separator: " ").count == 1, !top.spec.args.isEmpty {
+            toolNote = "tools: needs more words"
+            return ToolPlan(candidates: [], topScore: 0, call: nil, raw: "needs more words")
+        }
+        toolNote = "tools: \(top.spec.id) \(String(format: "%.2f", top.score))"
+        var plan = ToolPlan(candidates: candidates, topScore: top.score, call: nil, raw: "")
+        guard runModel else { return plan }
+        do { try await ensureLoaded(reflex, range: 0...0.3) } catch { return plan }
+
+        let prompt = ToolPlanner.prompt(user: text, recent: recentSummary(), candidates: candidates)
+        var answer = ""
+        do {
+            let stream = reflex.stream(
+                prompt, system: ToolPlanner.system,
+                settings: GenerateParameters(maxTokens: 90, temperature: 0))
+            for try await chunk in stream {
+                if Task.isCancelled { return plan }
+                answer += chunk
+                if answer.contains("\n") && answer.count > 4 { break }
+            }
+        } catch {
+            return plan
+        }
+        plan.raw = answer
+        // The search already found a tool the message has real words for. The model can pick a
+        // different one among the candidates; "none" only wins when the match was weak.
+        var chosen = ToolPlanner.parse(answer, candidates: candidates)
+        if chosen == nil {
+            let saidNone = answer.trimmingCharacters(in: .whitespacesAndNewlines).uppercased().hasPrefix("NONE")
+            if saidNone && top.score < 0.7 && top.evidence < 2 { return plan }
+            chosen = ToolPlanner.Call(spec: top.spec, args: [:])
+        }
+        guard let picked = chosen else { return plan }
+        let call = ToolPlanner.Call(
+            spec: picked.spec, args: ToolPlanner.fillArgs(picked.spec, said: text, args: picked.args))
+        toolNote = (toolNote ?? "") + " → " + call.spec.id
+        plan.call = call
+        return plan
+    }
+
+    /// "What can you do on my phone / with android / on my mac?" answered from the registry.
+    private static func capabilityAnswer(_ text: String) -> String? {
+        let lower = text.lowercased()
+        let asks = ["what can you do", "what all can you do", "what controls", "what powers", "what can you control",
+                    "which controls", "what are your abilities", "what can you access", "control my phone",
+                    "control the phone", "control your phone", "control android", "access my phone",
+                    "access the phone", "do you have access", "can you use my phone", "control my mac",
+                    "control the mac", "what tools", "which tools", "what do you have access"].contains { lower.contains($0) }
+        guard asks else { return nil }
+        if lower.contains("phone") || lower.contains("android") {
+            return "On your phone I can " + ToolRegistry.overview(.phone) + "."
+        }
+        if lower.contains("mac") || lower.contains("computer") {
+            return "On your Mac I can " + ToolRegistry.overview(.mac) + "."
+        }
+        return nil
+    }
+
+    /// While music is in play, asks the small model whether this message is about the music
+    /// and which action it means. It sees the last few messages and the song playing.
+    /// Returns nil for anything that isn't a clear music request.
+    func routeMusic(_ text: String) async -> MusicIntent? {
+        // Never wait for the model to load just for this; the normal reply path handles it.
+        guard await reflex.isLoaded else { return nil }
+        // Only messages that talk about music, songs or playback ever reach the model.
+        guard MusicIntent.musicish(text), !Self.isInformational(text) else { return nil }
+        let prompt = Persona.musicRouterPrompt(user: text, recent: recentSummary(), nowPlaying: music.currentSong)
+        var answer = ""
+        do {
+            let stream = reflex.stream(
+                prompt, system: Persona.musicRouter,
+                settings: GenerateParameters(maxTokens: 24, temperature: 0))
+            for try await chunk in stream {
+                if Task.isCancelled { return nil }
+                answer += chunk
+                if answer.contains("\n") && answer.count > 3 { break }
+            }
+        } catch {
+            return nil
+        }
+        let line = answer.split(whereSeparator: \.isNewline).first.map(String.init) ?? answer
+        routerNote = "router: \(line.trimmingCharacters(in: .whitespaces))"
+        return MusicIntent.fromRouter(answer, message: text)
+    }
+
+    /// Speaks a multi-sentence opener piece by piece, so the first words start quickly
+    /// instead of waiting for the whole opener to be voiced in one go.
+    private func sayInPieces(_ text: String) {
+        var chunker = SentenceChunker()
+        var pieces = chunker.feed(text)
+        if let rest = chunker.flush() { pieces.append(rest) }
+        for piece in pieces { say(piece) }
     }
 
     /// Joins the opening and the continuation into one natural sentence flow.
@@ -669,6 +989,7 @@ final class Conversation {
 
     private func finishTurn() {
         state.thinkingDepth = 0
+        state.deepWorking = false
         phaseTask?.cancel()
         phaseTask = nil
         handsFree?.setOutputActive(false)
@@ -706,12 +1027,12 @@ final class Conversation {
     }
 
     private func setReadyStatus() {
-        let deepName = state.mode == .focus ? "4B" : "2B"
+        let deepName = state.mode.short
         let ears = state.earsReady ? "ears" : "no ears"
         let voiceName = state.activeVoice?.label ?? "system voice"
         state.statusLine = lowMemory
             ? "Low memory · reflex only"
-            : "Ready · reflex 0.8B + deep \(deepName) · \(ears) · \(voiceName)"
+            : "Ready · reflex \(state.reflexChoice.label) + deep \(deepName) · \(ears) · \(voiceName)"
                 + (state.handsFree ? " · hands-free" + (state.echoCancelling ? "" : " (no echo cancel)") : "")
     }
 

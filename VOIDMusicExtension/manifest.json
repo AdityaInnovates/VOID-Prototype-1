@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "VOID Music Bridge",
+  "version": "0.1.0",
+  "description": "Lets VOID, your local Mac assistant, play and control YouTube Music in this browser.",
+  "minimum_chrome_version": "116",
+  "permissions": ["tabs", "scripting", "storage", "alarms"],
+  "host_permissions": ["https://music.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "VOID Music",
+    "default_popup": "popup.html"
+  }
+}

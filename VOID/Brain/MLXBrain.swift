@@ -6,6 +6,23 @@ import MLXLLM
 import MLXLMCommon
 import Tokenizers
 
+/// How long the last prompt took to process (prefill), for the transcript metrics.
+final class PrefillStats: @unchecked Sendable {
+    private let lock = NSLock()
+    private var tokens = 0
+    private var seconds = 0.0
+
+    func reset() { lock.lock(); tokens = 0; seconds = 0; lock.unlock() }
+    func set(tokens: Int, seconds: Double) { lock.lock(); self.tokens = tokens; self.seconds = seconds; lock.unlock() }
+
+    /// e.g. "640 tok in 910 ms", or nil if nothing was measured.
+    var label: String? {
+        lock.lock(); defer { lock.unlock() }
+        guard tokens > 0 else { return nil }
+        return "\(tokens) tok in \(Int(seconds * 1000)) ms"
+    }
+}
+
 enum BrainError: LocalizedError {
     case notLoaded(String)
 
@@ -30,6 +47,7 @@ actor MLXBrain {
 
     nonisolated let name: String
     nonisolated let modelID: String
+    nonisolated let prefill = PrefillStats()
 
     private let configuration: ModelConfiguration
     private let instructions: String
@@ -39,6 +57,8 @@ actor MLXBrain {
     /// Only the last few exchanges are re-read each turn, to keep replies fast.
     private let maxTurns = 4
 
+    /// Experiment: keep the MoE experts on the SSD and load them on demand (see Streaming/).
+    private let streamExperts: Bool
     private var container: ModelContainer?
     private var loadTask: Task<ModelContainer, Error>?
     private var history: [Turn] = []
@@ -48,8 +68,10 @@ actor MLXBrain {
         configuration: ModelConfiguration,
         instructions: String,
         parameters: GenerateParameters,
-        keepHistory: Bool
+        keepHistory: Bool,
+        streamExperts: Bool = false
     ) {
+        self.streamExperts = streamExperts
         self.name = name
         self.configuration = configuration
         self.modelID = configuration.name
@@ -69,8 +91,13 @@ actor MLXBrain {
         }
 
         let configuration = self.configuration
+        let streaming = self.streamExperts
         let task = Task<ModelContainer, Error> {
-            try await #huggingFaceLoadModelContainer(
+            if streaming {
+                return try await StreamingLoader.loadContainer(
+                    configuration: configuration, progress: progress)
+            }
+            return try await #huggingFaceLoadModelContainer(
                 configuration: configuration,
                 progressHandler: { p in progress(p.fractionCompleted) }
             )
@@ -114,11 +141,16 @@ actor MLXBrain {
     /// Streams a reply as text chunks. If `prefix` is given, it is placed at the start of
     /// the reply as if the model had already said it, and the stream contains only what
     /// comes after it. Cancelling the consuming task stops generation.
-    nonisolated func stream(_ prompt: String, prefix: String = "") -> AsyncThrowingStream<String, Error> {
+    ///
+    /// `system` and `settings` replace the brain's usual instructions and sampling for this
+    /// one call (and skip the conversation history), for small jobs like picking a tool.
+    nonisolated func stream(
+        _ prompt: String, prefix: String = "", system: String? = nil, settings: GenerateParameters? = nil
+    ) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    try await self.run(prompt, prefix: prefix) { chunk in
+                    try await self.run(prompt, prefix: prefix, system: system, settings: settings) { chunk in
                         continuation.yield(chunk)
                     }
                     continuation.finish()
@@ -132,11 +164,14 @@ actor MLXBrain {
         }
     }
 
-    private func run(_ prompt: String, prefix: String, yield: @escaping @Sendable (String) -> Void) async throws {
+    private func run(
+        _ prompt: String, prefix: String, system: String?, settings: GenerateParameters?,
+        yield: @escaping @Sendable (String) -> Void
+    ) async throws {
         guard let container else { throw BrainError.notLoaded(name) }
 
-        var built: [[String: any Sendable]] = [["role": "system", "content": instructions]]
-        if keepHistory {
+        var built: [[String: any Sendable]] = [["role": "system", "content": system ?? instructions]]
+        if keepHistory && system == nil {
             for turn in history {
                 built.append(["role": "user", "content": turn.user])
                 built.append(["role": "assistant", "content": turn.reply])
@@ -145,7 +180,9 @@ actor MLXBrain {
         built.append(["role": "user", "content": prompt])
 
         let messages = built
-        let parameters = self.parameters
+        let stats = prefill
+        stats.reset()
+        let parameters = settings ?? self.parameters
         let opener = prefix.trimmingCharacters(in: .whitespacesAndNewlines)
         // Qwen3.5 can "think" before answering. For a voice assistant that's too slow.
         let extra: [String: any Sendable] = ["enable_thinking": false]
@@ -161,8 +198,13 @@ actor MLXBrain {
             let stream = try MLXLMCommon.generate(input: input, parameters: parameters, context: context)
             for await item in stream {
                 if Task.isCancelled { break }
-                if case .chunk(let text) = item {
+                switch item {
+                case .chunk(let text):
                     yield(text)
+                case .info(let info):
+                    stats.set(tokens: info.promptTokenCount, seconds: info.promptTime)
+                default:
+                    break
                 }
             }
         }

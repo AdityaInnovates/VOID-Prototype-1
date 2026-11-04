@@ -6,7 +6,7 @@ struct SentenceChunker {
     private var buffer = ""
     /// The first piece is cut early (at a comma) so VOID starts speaking sooner;
     /// later pieces wait for whole sentences, which sound better.
-    private var emittedAny = false
+    private var emittedCount = 0
 
     mutating func feed(_ text: String) -> [String] {
         buffer += text
@@ -16,7 +16,7 @@ struct SentenceChunker {
             buffer = String(buffer[end...])
             if !piece.isEmpty {
                 pieces.append(piece)
-                emittedAny = true
+                emittedCount += 1
             }
         }
         return pieces
@@ -42,9 +42,15 @@ struct SentenceChunker {
             if ".!?…".contains(char), next < buffer.endIndex, buffer[next].isWhitespace, count >= 14 {
                 return next
             }
-            // Break at a comma for a long sentence, or early for the very first piece.
-            let commaAfter = emittedAny ? 70 : 24
+            // Pieces ramp up in size: the first is short so its voice is ready while the
+            // opener is still playing, the next a bit longer, then whole sentences.
+            let commaAfter = emittedCount == 0 ? 24 : (emittedCount == 1 ? 40 : 70)
             if ",;:—".contains(char), next < buffer.endIndex, buffer[next] == " ", count >= commaAfter {
+                return next
+            }
+            // No comma in sight: cut the first piece at a word boundary rather than wait
+            // for a whole long sentence.
+            if emittedCount == 0, char == " ", count >= 46 {
                 return next
             }
             index = next

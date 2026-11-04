@@ -1,0 +1,36 @@
+# Router eval
+
+- Date: 2026-11-04T21:11:29Z
+- Mode: offline (rules + tool search only)
+- Tool search threshold: 0.58
+- **Overall: 209/209 (100%)**
+
+## By slice
+
+| Slice | Right | Total | Accuracy |
+|---|---|---|---|
+| ambiguous | 15 | 15 | 100% |
+| asr_noise | 28 | 28 | 100% |
+| chat_en | 30 | 30 | 100% |
+| chat_hinglish | 14 | 14 | 100% |
+| hinglish_tools | 25 | 25 | 100% |
+| mac_en | 18 | 18 | 100% |
+| music_en | 30 | 30 | 100% |
+| music_hinglish | 20 | 20 | 100% |
+| phone_en | 29 | 29 | 100% |
+
+False triggers (chat that fired a tool or music): 0/46
+
+## By stage
+
+| Stage | Cases | Right | Avg ms |
+|---|---|---|---|
+| below-threshold | 53 | 53 | 1 |
+| music-rules | 66 | 66 | 0 |
+| phone-rules | 46 | 46 | 0 |
+| tool-search | 44 | 44 | 5 |
+
+## Misses
+
+| id | said | wanted | got | stage | note |
+|---|---|---|---|---|---|

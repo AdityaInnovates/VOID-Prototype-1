@@ -28,6 +28,9 @@ packages:
   FluidAudio:
     url: https://github.com/FluidInference/FluidAudio.git
     minorVersion: 0.18.2
+  SkyLightWindow:
+    url: https://github.com/AdityaInnovates/SkyLightWindow
+    branch: main
 
 targets:
   VOID:
@@ -46,12 +49,18 @@ targets:
         LSUIElement: true
         LSMinimumSystemVersion: "$(MACOSX_DEPLOYMENT_TARGET)"
         NSMicrophoneUsageDescription: "VOID listens when you talk to it. Audio never leaves your Mac."
+        NSLocationWhenInUseUsageDescription: "VOID uses your rough location once a day to check the weather when it picks music for you."
+        NSLocationUsageDescription: "VOID uses your rough location once a day to check the weather when it picks music for you."
+        NSBluetoothAlwaysUsageDescription: "VOID switches this Mac's Bluetooth on or off when you ask."
     entitlements:
       path: VOID/VOID.entitlements
       properties:
         com.apple.security.app-sandbox: false
         com.apple.security.network.client: true
+        com.apple.security.network.server: true
+        com.apple.security.personal-information.location: true
         com.apple.security.device.audio-input: true
+        com.apple.security.device.bluetooth: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.adityainnovates.void
@@ -77,3 +86,5 @@ targets:
         product: Tokenizers
       - package: FluidAudio
         product: FluidAudio
+      - package: SkyLightWindow
+        product: SkyLightWindow

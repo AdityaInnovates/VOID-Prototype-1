@@ -1,0 +1,51 @@
+
+=== 2026-11-04T22:00:59Z ===
+Signal 5
+0   VOID                                0x0000000104b18c6c $s4VOID8CrashLogO7installyyFZys5Int32VcfU0_ + 140
+1   libsystem_platform.dylib            0x00000001876aa144 _sigtramp + 56
+2   libswiftCore.dylib                  0x00000001828dd604 $ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF + 180
+3   libswiftCore.dylib                  0x00000001827b777c swift_unexpectedError + 700
+4   VOID                                0x000000010552e6dc $s5MLXNN6ModuleC6update7modulesACXD3MLX16NestedDictionaryVySSACG_tF + 96
+5   VOID                                0x0000000104bb350c $s4VOID15StreamingLoaderO8register33_B6DF41596F358E2E818B8832F0198729LLyyYaFZ11MLXLMCommon13LanguageModel_p10Foundation4DataVKcfU_ + 1980
+6   VOID                                0x0000000105645d18 $s11MLXLMCommon17ModelTypeRegistryC06createB013configuration05modelC0x10Foundation4DataV_SStKF + 500
+7   VOID                                0x0000000105402e28 $s6MLXLLM15LLMModelFactoryC5_load13configuration15tokenizerLoader11MLXLMCommon12ModelContextVAG08ResolvedI13ConfigurationV_AG09TokenizerG0_ptYaKFTY1_ + 64
+8   VOID                                0x0000000104ae8819 $s4VOID11AppDelegateC10hotKeyDown33_6FD425ED224FB5025EB88C041DC0652BLLyyFyyYacfU_TATQ0_ + 1
+9   VOID                                0x0000000105622811 $s11MLXLMCommon19GenericModelFactoryPAAE13loadContainer4from5using0F4TypeQz10Foundation3URLV_AA15TokenizerLoader_ptYaKFTQ1_ + 1
+10  VOID                                0x0000000104bb4995 $s4VOID15StreamingLoaderO13loadContainer13configuration8progress11MLXLMCommon05ModelE0CAG0I13ConfigurationV_ySdYbctYaKFZTf4nnd_nTQ9_ + 1
+11  VOID                                0x0000000104b35e09 $s4VOID8MLXBrainC4load8progressyySdYbc_tYaKF11MLXLMCommon14ModelContainerCyYaKcfU_TQ1_ + 1
+12  VOID                                0x0000000104ae8bf9 $sxIeAgHr_xs5Error_pIegHrzo_s8SendableRzs5NeverORs_r0_lTRytSg_TG5TA.35TQ0_ + 1
+13  libswift_Concurrency.dylib          0x00000001867a4d41 _ZL23completeTaskWithClosurePN5swift12AsyncContextEPNS_10SwiftErrorE + 1
+
+=== 2026-11-04T22:01:24Z ===
+Signal 5
+0   VOID                                0x0000000102d10c6c $s4VOID8CrashLogO7installyyFZys5Int32VcfU0_ + 140
+1   libsystem_platform.dylib            0x00000001876aa144 _sigtramp + 56
+2   libswiftCore.dylib                  0x00000001828dd604 $ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF + 180
+3   libswiftCore.dylib                  0x00000001827b777c swift_unexpectedError + 700
+4   VOID                                0x00000001037266dc $s5MLXNN6ModuleC6update7modulesACXD3MLX16NestedDictionaryVySSACG_tF + 96
+5   VOID                                0x0000000102dab50c $s4VOID15StreamingLoaderO8register33_B6DF41596F358E2E818B8832F0198729LLyyYaFZ11MLXLMCommon13LanguageModel_p10Foundation4DataVKcfU_ + 1980
+6   VOID                                0x000000010383dd18 $s11MLXLMCommon17ModelTypeRegistryC06createB013configuration05modelC0x10Foundation4DataV_SStKF + 500
+7   VOID                                0x00000001035fae28 $s6MLXLLM15LLMModelFactoryC5_load13configuration15tokenizerLoader11MLXLMCommon12ModelContextVAG08ResolvedI13ConfigurationV_AG09TokenizerG0_ptYaKFTY1_ + 64
+8   VOID                                0x0000000102ce0819 $s4VOID11AppDelegateC10hotKeyDown33_6FD425ED224FB5025EB88C041DC0652BLLyyFyyYacfU_TATQ0_ + 1
+9   VOID                                0x000000010381a811 $s11MLXLMCommon19GenericModelFactoryPAAE13loadContainer4from5using0F4TypeQz10Foundation3URLV_AA15TokenizerLoader_ptYaKFTQ1_ + 1
+10  VOID                                0x0000000102dac995 $s4VOID15StreamingLoaderO13loadContainer13configuration8progress11MLXLMCommon05ModelE0CAG0I13ConfigurationV_ySdYbctYaKFZTf4nnd_nTQ9_ + 1
+11  VOID                                0x0000000102d2de09 $s4VOID8MLXBrainC4load8progressyySdYbc_tYaKF11MLXLMCommon14ModelContainerCyYaKcfU_TQ1_ + 1
+12  VOID                                0x0000000102ce0bf9 $sxIeAgHr_xs5Error_pIegHrzo_s8SendableRzs5NeverORs_r0_lTRytSg_TG5TA.35TQ0_ + 1
+13  libswift_Concurrency.dylib          0x00000001867a4d41 _ZL23completeTaskWithClosurePN5swift12AsyncContextEPNS_10SwiftErrorE + 1
+
+=== 2026-11-04T22:01:51Z ===
+Signal 5
+0   VOID                                0x0000000100850c6c $s4VOID8CrashLogO7installyyFZys5Int32VcfU0_ + 140
+1   libsystem_platform.dylib            0x00000001876aa144 _sigtramp + 56
+2   libswiftCore.dylib                  0x00000001828dd604 $ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF + 180
+3   libswiftCore.dylib                  0x00000001827b777c swift_unexpectedError + 700
+4   VOID                                0x00000001012666dc $s5MLXNN6ModuleC6update7modulesACXD3MLX16NestedDictionaryVySSACG_tF + 96
+5   VOID                                0x00000001008eb50c $s4VOID15StreamingLoaderO8register33_B6DF41596F358E2E818B8832F0198729LLyyYaFZ11MLXLMCommon13LanguageModel_p10Foundation4DataVKcfU_ + 1980
+6   VOID                                0x000000010137dd18 $s11MLXLMCommon17ModelTypeRegistryC06createB013configuration05modelC0x10Foundation4DataV_SStKF + 500
+7   VOID                                0x000000010113ae28 $s6MLXLLM15LLMModelFactoryC5_load13configuration15tokenizerLoader11MLXLMCommon12ModelContextVAG08ResolvedI13ConfigurationV_AG09TokenizerG0_ptYaKFTY1_ + 64
+8   VOID                                0x0000000100820819 $s4VOID11AppDelegateC10hotKeyDown33_6FD425ED224FB5025EB88C041DC0652BLLyyFyyYacfU_TATQ0_ + 1
+9   VOID                                0x000000010135a811 $s11MLXLMCommon19GenericModelFactoryPAAE13loadContainer4from5using0F4TypeQz10Foundation3URLV_AA15TokenizerLoader_ptYaKFTQ1_ + 1
+10  VOID                                0x00000001008ec995 $s4VOID15StreamingLoaderO13loadContainer13configuration8progress11MLXLMCommon05ModelE0CAG0I13ConfigurationV_ySdYbctYaKFZTf4nnd_nTQ9_ + 1
+11  VOID                                0x000000010086de09 $s4VOID8MLXBrainC4load8progressyySdYbc_tYaKF11MLXLMCommon14ModelContainerCyYaKcfU_TQ1_ + 1
+12  VOID                                0x0000000100820bf9 $sxIeAgHr_xs5Error_pIegHrzo_s8SendableRzs5NeverORs_r0_lTRytSg_TG5TA.35TQ0_ + 1
+13  libswift_Concurrency.dylib          0x00000001867a4d41 _ZL23completeTaskWithClosurePN5swift12AsyncContextEPNS_10SwiftErrorE + 1

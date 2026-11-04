@@ -1,0 +1,106 @@
+
+=== 2026-11-04T19:52:35Z ===
+Exception NSGenericException: The window has been marked as needing another Update Constraints in Window pass, but it has already had more Update Constraints in Window passes than there are views in the window. 
+<VOID.KeyPanel: 0x773b19e800> 0x383a (14394) {{541, 826}, {440, 156}} en
+0   CoreFoundation                      0x00000001869157b0 __exceptionPreprocess + 176
+1   libobjc.A.dylib                     0x000000018257065c objc_exception_throw + 88
+2   CoreFoundation                      0x00000001869156a0 +[NSException exceptionWithName:reason:userInfo:] + 0
+3   AppKit                              0x000000018cdc1ae0 -[NSWindow(NSDisplayCycle) _postWindowNeedsUpdateConstraints] + 1716
+4   AppKit                              0x000000018c56a52c -[NSView _informContainerThatSubviewsNeedUpdateConstraints] + 72
+5   AppKit                              0x000000018c56a4a8 -[NSView setNeedsUpdateConstraints:] + 452
+6   SwiftUI                             0x000000019ced87cc $s7SwiftUI13NSHostingViewC14setNeedsUpdateyyF + 208
+7   SwiftUI                             0x000000019cefaaf4 $s7SwiftUI13NSHostingViewC13requestUpdate5afterySd_tF + 624
+8   SwiftUICore                         0x000000019346a914 $s7SwiftUI25ViewGraphRootValueUpdaterPAAE20invalidateProperties_14mayDeferUpdateyAA0cdE6ValuesV_SbtFyyXEfU_ + 200
+9   SwiftUICore                         0x0000000193469bc0 $s7SwiftUI25ViewGraphRootValueUpdaterPAAE20invalidateProperties_14mayDeferUpdateyAA0cdE6ValuesV_SbtF + 232
+10  SwiftUI                             0x000000019ced9784 $s7SwiftUI13NSHostingViewC24invalidateSafeAreaInsets33_32B6F54841135BB466A5C1362EB89D05LLyyF + 292
+11  SwiftUI                             0x000000019ceed7b0 $s7SwiftUI13NSHostingViewC14didChangeValue6forKeyySS_tF + 228
+12  SwiftUI                             0x000000019ceed914 $s7SwiftUI13NSHostingViewC14didChangeValue6forKeyySS_tFTo + 68
+13  CoreFoundation                      0x00000001868696fc __CFSetApplyFunction_block_invoke + 28
+14  CoreFoundation                      0x0000000186869530 CFBasicHashApply + 144
+15  CoreFoundation                      0x0000000186869470 CFSetApplyFunction + 228
+16  AppKit                              0x000000018cb13d20 __reusableDependencyContextForKey_block_invoke + 140
+17  CoreFoundation                      0x00000001868696fc __CFSetApplyFunction_block_invoke + 28
+18  CoreFoundation                      0x0000000186869530 CFBasicHashApply + 144
+19  CoreFoundation                      0x0000000186869470 CFSetApplyFunction + 228
+20  AppKit                              0x000000018c57a2a8 -[NSView setFrameSize:] + 668
+21  AppKit                              0x000000018c70cb74 -[NSNextStepFrame setFrameSize:] + 116
+22  AppKit                              0x000000018c593018 -[NSWindow _oldPlaceWindow:fromServer:] + 632
+23  AppKit                              0x000000018c592440 -[NSWindow _setFrameCommon:display:fromServer:] + 1888
+24  SwiftUI                             0x000000019cee5788 $s7SwiftUI13NSHostingViewC24updateAnimatedWindowSizeyySo6CGSizeVF + 152
+25  SwiftUI                             0x000000019ced3420 $s7SwiftUI13NSHostingViewC15windowDidLayoutyyF + 228
+26  SwiftUI                             0x000000019cee5ea4 $s7SwiftUI13NSHostingViewC15windowDidLayoutyyFTo + 28
+27  CoreFoundation                      0x000000018689a17c __CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__ + 148
+28  CoreFoundation                      0x0000000186929288 ___CFXRegistrationPost_block_invoke + 92
+29  CoreFoundation                      0x00000001869291cc _CFXRegistrationPost + 440
+30  CoreFoundation                      0x000000018686635c _CFXNotificationPost + 688
+31  Foundation                          0x0000000182d1f37c -[NSNotificationCenter postNotificationName:object:userInfo:] + 88
+32  AppKit                              0x000000018d1bb620 -[NSWindow(NSConstraintBasedLayoutInternal) layoutIfNeeded] + 272
+33  AppKit                              0x000000018c5f5060 __NSWindowGetDisplayCycleObserverForLayout_block_invoke + 364
+34  AppKit                              0x000000018c5f4590 NSDisplayCycleObserverInvoke + 152
+35  AppKit                              0x000000018c5f421c NSDisplayCycleFlush + 656
+36  QuartzCore                          0x000000018fe46098 _ZN2CA11Transaction19run_commit_handlersE18CATransactionPhase + 120
+37  QuartzCore                          0x000000018fe44694 _ZN2CA11Transaction6commitEv + 332
+38  QuartzCore                          0x000000018fe44370 _ZN2CA11Transaction5flushEv + 84
+39  QuartzCore                          0x0000000190077514 _ZN2CA11Transaction25flush_as_runloop_observerEb + 140
+40  AppKit                              0x000000018ca5beb4 stepTransactionFlush + 588
+41  UpdateCycle                         0x0000000192102630 _ZN2UC10DriverCore18continueProcessingEv + 136
+42  CoreFoundation                      0x00000001868d1170 __CFMachPortPerform + 288
+43  CoreFoundation                      0x00000001868a5efc __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__ + 60
+44  CoreFoundation                      0x00000001868a5e24 __CFRunLoopDoSource1 + 604
+45  CoreFoundation                      0x00000001868a471c __CFRunLoopRun + 2208
+46  CoreFoundation                      0x000000018697ec10 _CFRunLoopRunSpecificWithOptions + 536
+47  HIToolbox                           0x000000019105c5e0 RunCurrentEventLoopInMode + 320
+48  HIToolbox                           0x000000019105f96c ReceiveNextEventCommon + 492
+49  HIToolbox                           0x00000001911e5db8 _BlockUntilNextEventMatchingListInMode + 48
+50  AppKit                              0x000000018c8908c0 _DPSBlockUntilNextEventMatchingListInMode + 292
+51  AppKit                              0x000000018c54f59c _DPSNextEvent + 576
+52  AppKit                              0x000000018cce65f8 -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:] + 832
+53  AppKit                              0x000000018cce60e8 -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:] + 344
+54  AppKit                              0x000000018c542920 -[NSApplication run] + 396
+55  AppKit                              0x000000018c51acec NSApplicationMain + 880
+56  SwiftUI                             0x000000019c700404 $s7SwiftUI6runAppys5NeverOSo21NSApplicationDelegate_So11NSResponderCXcFTf4e_nAA07TestingdG0C_Tg5Tm + 140
+57  SwiftUI                             0x000000019cb274d0 $s7SwiftUI6runAppys5NeverOxAA0D0RzlF + 108
+58  SwiftUI                             0x000000019cdfec54 $s7SwiftUI3AppPAAE4mainyyFZ + 224
+59  VOID                                0x00000001021d6f88 main + 64
+60  dyld                                0x000000018260cd7c start + 6652
+
+=== 2026-11-04T19:52:35Z ===
+Signal 6
+0   VOID                                0x0000000102135e48 $s4VOID8CrashLogO7installyyFZys5Int32VcfU0_ + 140
+1   libsystem_platform.dylib            0x00000001876aa144 _sigtramp + 56
+2   libsystem_pthread.dylib             0x00000001826e0960 pthread_kill + 296
+3   libsystem_c.dylib                   0x0000000182774480 abort + 148
+4   libc++abi.dylib                     0x0000000186e09304 _ZN10__cxxabiv116__shim_type_infoD1Ev + 0
+5   libc++abi.dylib                     0x0000000186df6678 _ZSt14set_unexpectedPFvvE + 0
+6   libobjc.A.dylib                     0x000000018257a190 _ZL15_objc_terminatev + 156
+7   libc++abi.dylib                     0x0000000186e062b0 _ZSt11__terminatePFvvE + 16
+8   libc++abi.dylib                     0x0000000186df5f68 _ZN10__cxxabiv1L13is_class_typeEPKNS_16__shim_type_infoE + 0
+9   libobjc.A.dylib                     0x0000000182596010 objc_exception_rethrow + 44
+10  AppKit                              0x000000018c5f50a8 __NSWindowGetDisplayCycleObserverForLayout_block_invoke + 436
+11  AppKit                              0x000000018c5f4590 NSDisplayCycleObserverInvoke + 152
+12  AppKit                              0x000000018c5f421c NSDisplayCycleFlush + 656
+13  QuartzCore                          0x000000018fe46098 _ZN2CA11Transaction19run_commit_handlersE18CATransactionPhase + 120
+14  QuartzCore                          0x000000018fe44694 _ZN2CA11Transaction6commitEv + 332
+15  QuartzCore                          0x000000018fe44370 _ZN2CA11Transaction5flushEv + 84
+16  QuartzCore                          0x0000000190077514 _ZN2CA11Transaction25flush_as_runloop_observerEb + 140
+17  AppKit                              0x000000018ca5beb4 stepTransactionFlush + 588
+18  UpdateCycle                         0x0000000192102630 _ZN2UC10DriverCore18continueProcessingEv + 136
+19  CoreFoundation                      0x00000001868d1170 __CFMachPortPerform + 288
+20  CoreFoundation                      0x00000001868a5efc __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__ + 60
+21  CoreFoundation                      0x00000001868a5e24 __CFRunLoopDoSource1 + 604
+22  CoreFoundation                      0x00000001868a471c __CFRunLoopRun + 2208
+23  CoreFoundation                      0x000000018697ec10 _CFRunLoopRunSpecificWithOptions + 536
+24  HIToolbox                           0x000000019105c5e0 RunCurrentEventLoopInMode + 320
+25  HIToolbox                           0x000000019105f96c ReceiveNextEventCommon + 492
+26  HIToolbox                           0x00000001911e5db8 _BlockUntilNextEventMatchingListInMode + 48
+27  AppKit                              0x000000018c8908c0 _DPSBlockUntilNextEventMatchingListInMode + 292
+28  AppKit                              0x000000018c54f59c _DPSNextEvent + 576
+29  AppKit                              0x000000018cce65f8 -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:] + 832
+30  AppKit                              0x000000018cce60e8 -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:] + 344
+31  AppKit                              0x000000018c542920 -[NSApplication run] + 396
+32  AppKit                              0x000000018c51acec NSApplicationMain + 880
+33  SwiftUI                             0x000000019c700404 $s7SwiftUI6runAppys5NeverOSo21NSApplicationDelegate_So11NSResponderCXcFTf4e_nAA07TestingdG0C_Tg5Tm + 140
+34  SwiftUI                             0x000000019cb274d0 $s7SwiftUI6runAppys5NeverOxAA0D0RzlF + 108
+35  SwiftUI                             0x000000019cdfec54 $s7SwiftUI3AppPAAE4mainyyFZ + 224
+36  VOID                                0x00000001021d6f88 main + 64
+37  dyld                                0x000000018260cd7c start + 6652

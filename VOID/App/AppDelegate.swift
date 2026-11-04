@@ -28,6 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        CrashLog.install()
         NSApp.setActivationPolicy(.accessory)
 
         // Keep MLX's buffer cache small: this Mac has 8 GB shared with the GPU.
@@ -62,8 +63,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
+        ScreenLock.shared.onChange = { [weak self] locked in
+            guard let self else { return }
+            self.state.screenLocked = locked
+            if locked { self.orbPanel?.screenLocked() } else { self.orbPanel?.screenUnlocked() }
+        }
         orbPanel?.show()
         conversation.warmUp()
+        PhoneController.shared.start(state: state)
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        KeepAwake.shared.resumeAll()   // never leave other apps frozen
+    }
+
+    func pairPhone() {
+        let pin = PhoneController.shared.link.openPairing()
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = "Pair your phone"
+        alert.informativeText = "Open VOID on your phone and enter this PIN within 5 minutes:\n\n\(pin)"
+        alert.runModal()
     }
 
     private func hotKeyDown() {

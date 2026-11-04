@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#0B0B0F">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VOID"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp"
+            android:letterSpacing="0.3"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Not paired"
+            android:textColor="#9AA0B4"
+            android:textSize="15sp" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Talk to VOID" />
+
+        <Button
+            android:id="@+id/micButton"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="8dp"
+            android:text="Tap to talk"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/askText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="or type to VOID"
+                android:textColorHint="#555B70"
+                android:textColor="#FFFFFF"
+                android:imeOptions="actionSend"
+                android:inputType="textCapSentences"
+                android:backgroundTint="#333849" />
+
+            <Button
+                android:id="@+id/askSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?attr/materialButtonOutlinedStyle"
+                android:text="Send" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/speakReply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Speak VOID's reply on the phone"
+            android:textColor="#D7DAE4"
+            android:checked="true" />
+
+        <TextView
+            android:id="@+id/reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Your Mac" />
+
+        <EditText
+            android:id="@+id/macUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="wss://void.adityainnovates.me"
+            android:textColorHint="#555B70"
+            android:textColor="#FFFFFF"
+            android:inputType="textUri"
+            android:backgroundTint="#333849" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Pair" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="In VOID's menu on the Mac, click “Pair a phone…”, then type the 6-digit PIN it shows."
+            android:textColor="#9AA0B4"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="123456"
+            android:textColorHint="#555B70"
+            android:textColor="#FFFFFF"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textSize="22sp"
+            android:letterSpacing="0.4"
+            android:backgroundTint="#333849" />
+
+        <Button
+            android:id="@+id/pairButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pair with Mac" />
+
+        <Button
+            android:id="@+id/unpairButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="Unpair" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Permissions VOID can use" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grant only what you want VOID to reach. Each power stays off until its permission is on."
+            android:textColor="#9AA0B4"
+            android:textSize="14sp" />
+
+        <Button android:id="@+id/permCore" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Allow messages, calls, contacts, location, mic" />
+        <Button android:id="@+id/permNotered" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Notification access (mirror + reply)" />
+        <Button android:id="@+id/permDnd" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Do Not Disturb control" />
+        <Button android:id="@+id/permAccess" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Screen control (tap things in apps)" />
+        <Button android:id="@+id/permAdmin" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Device admin (lock the phone)" />
+        <Button android:id="@+id/permBattery" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Stop Android from sleeping the link" />
+
+        <CheckBox
+            android:id="@+id/mirror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Mirror my notifications to the Mac"
+            android:textColor="#D7DAE4"
+            android:checked="true" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Quiet hours" />
+
+        <TextView
+            android:id="@+id/quietStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#D7DAE4"
+            android:textSize="14sp" />
+
+        <CheckBox
+            android:id="@+id/quietEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keep VOID quiet during these hours"
+            android:textColor="#D7DAE4" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button android:id="@+id/quietStart" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" style="?attr/materialButtonOutlinedStyle" android:text="From 8:00 AM" />
+            <Button android:id="@+id/quietEnd" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" style="?attr/materialButtonOutlinedStyle" android:text="To 6:00 PM" />
+        </LinearLayout>
+        <Button android:id="@+id/quiet2h" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Quiet for 2 hours" />
+        <Button android:id="@+id/quietDay" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Quiet for the rest of today" />
+        <Button android:id="@+id/quietClear" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="End quiet timer" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Works even when the Mac is off. Changes sync when it's back; the newest change wins."
+            android:textColor="#555B70"
+            android:textSize="12sp" />
+
+        <TextView
+            style="@style/VoidHeader"
+            android:text="Tuning log" />
+
+        <CheckBox
+            android:id="@+id/recordLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Record notifications for tuning"
+            android:textColor="#D7DAE4" />
+
+        <TextView
+            android:id="@+id/logStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#9AA0B4"
+            android:textSize="14sp" />
+        <Button android:id="@+id/logSend" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Send log to Mac" />
+        <Button android:id="@+id/logClear" android:layout_width="match_parent" android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle" android:text="Clear log" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="30dp"
+            android:text="Everything runs over your own cloudflared tunnel, end to end. The Mac only accepts this phone after pairing."
+            android:textColor="#555B70"
+            android:textSize="12sp" />
+    </LinearLayout>
+</ScrollView>

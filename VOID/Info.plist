@@ -24,6 +24,12 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>VOID switches this Mac's Bluetooth on or off when you ask.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>VOID uses your rough location once a day to check the weather when it picks music for you.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>VOID uses your rough location once a day to check the weather when it picks music for you.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>VOID listens when you talk to it. Audio never leaves your Mac.</string>
 </dict>

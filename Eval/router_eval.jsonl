@@ -1,0 +1,209 @@
+{"id": "music_en-01", "slice": "music_en", "text": "pause", "expect": "music:pause"}
+{"id": "music_en-02", "slice": "music_en", "text": "pause the music", "expect": "music:pause"}
+{"id": "music_en-03", "slice": "music_en", "text": "stop the music", "expect": "music:pause"}
+{"id": "music_en-04", "slice": "music_en", "text": "resume", "expect": "music:resume"}
+{"id": "music_en-05", "slice": "music_en", "text": "continue playing", "expect": "music:resume"}
+{"id": "music_en-06", "slice": "music_en", "text": "next song", "expect": "music:next"}
+{"id": "music_en-07", "slice": "music_en", "text": "skip", "expect": "music:next"}
+{"id": "music_en-08", "slice": "music_en", "text": "skip this song", "expect": "music:next"}
+{"id": "music_en-09", "slice": "music_en", "text": "play the previous song", "expect": "music:previous"}
+{"id": "music_en-10", "slice": "music_en", "text": "go back a song", "expect": "music:previous"}
+{"id": "music_en-11", "slice": "music_en", "text": "play that again", "expect": "music:replay|music:previous"}
+{"id": "music_en-12", "slice": "music_en", "text": "volume up", "expect": "music:volume"}
+{"id": "music_en-13", "slice": "music_en", "text": "turn the volume down", "expect": "music:volume"}
+{"id": "music_en-14", "slice": "music_en", "text": "set volume to 40 percent", "expect": "music:volume"}
+{"id": "music_en-15", "slice": "music_en", "text": "what's playing", "expect": "music:nowPlaying"}
+{"id": "music_en-16", "slice": "music_en", "text": "who sings this", "expect": "music:nowPlaying"}
+{"id": "music_en-17", "slice": "music_en", "text": "i like this song", "expect": "music:like"}
+{"id": "music_en-18", "slice": "music_en", "text": "i don't like this song", "expect": "music:dislike"}
+{"id": "music_en-19", "slice": "music_en", "text": "play my liked songs", "expect": "music:likedSongs"}
+{"id": "music_en-20", "slice": "music_en", "text": "play the playlist soft sad raps", "expect": "music:playlist"}
+{"id": "music_en-21", "slice": "music_en", "text": "play laal pari", "expect": "music:song"}
+{"id": "music_en-22", "slice": "music_en", "text": "play choot vol 1", "expect": "music:song"}
+{"id": "music_en-23", "slice": "music_en", "text": "play shape of you by ed sheeran", "expect": "music:song"}
+{"id": "music_en-24", "slice": "music_en", "text": "play something calm", "expect": "music:suggest"}
+{"id": "music_en-25", "slice": "music_en", "text": "play something random", "expect": "music:random|music:suggest"}
+{"id": "music_en-26", "slice": "music_en", "text": "play a random chill song", "expect": "music:random"}
+{"id": "music_en-27", "slice": "music_en", "text": "play some punjabi songs", "expect": "music:suggest|music:song"}
+{"id": "music_en-28", "slice": "music_en", "text": "play something for the gym", "expect": "music:suggest"}
+{"id": "music_en-29", "slice": "music_en", "text": "put on something else", "expect": "music:next"}
+{"id": "music_en-30", "slice": "music_en", "text": "play brown rang", "expect": "music:song"}
+{"id": "music_hinglish-01", "slice": "music_hinglish", "text": "gaana pause karo", "expect": "music:pause"}
+{"id": "music_hinglish-02", "slice": "music_hinglish", "text": "gaana band karo", "expect": "music:pause"}
+{"id": "music_hinglish-03", "slice": "music_hinglish", "text": "music rok do", "expect": "music:pause"}
+{"id": "music_hinglish-04", "slice": "music_hinglish", "text": "agla gaana chalao", "expect": "music:next"}
+{"id": "music_hinglish-05", "slice": "music_hinglish", "text": "gaana change karo", "expect": "music:next"}
+{"id": "music_hinglish-06", "slice": "music_hinglish", "text": "ye gaana skip karo", "expect": "music:next"}
+{"id": "music_hinglish-07", "slice": "music_hinglish", "text": "pichla gaana lagao", "expect": "music:previous"}
+{"id": "music_hinglish-08", "slice": "music_hinglish", "text": "volume thoda kam karo", "expect": "music:volume"}
+{"id": "music_hinglish-09", "slice": "music_hinglish", "text": "awaaz badha do", "expect": "music:volume"}
+{"id": "music_hinglish-10", "slice": "music_hinglish", "text": "volume pachas kar do", "expect": "music:volume"}
+{"id": "music_hinglish-11", "slice": "music_hinglish", "text": "ye konsa gaana hai", "expect": "music:nowPlaying"}
+{"id": "music_hinglish-12", "slice": "music_hinglish", "text": "ye gaana pasand aaya", "expect": "music:like"}
+{"id": "music_hinglish-13", "slice": "music_hinglish", "text": "mere liked songs chalao", "expect": "music:likedSongs"}
+{"id": "music_hinglish-14", "slice": "music_hinglish", "text": "kuch shaant sa chalao", "expect": "music:suggest"}
+{"id": "music_hinglish-15", "slice": "music_hinglish", "text": "koi sad gaana lagao", "expect": "music:suggest"}
+{"id": "music_hinglish-16", "slice": "music_hinglish", "text": "arijit singh ka koi gaana chalao", "expect": "music:song|music:suggest"}
+{"id": "music_hinglish-17", "slice": "music_hinglish", "text": "laal pari chalao", "expect": "music:song"}
+{"id": "music_hinglish-18", "slice": "music_hinglish", "text": "gaana chalu karo", "expect": "music:resume"}
+{"id": "music_hinglish-19", "slice": "music_hinglish", "text": "phir se wahi gaana chalao", "expect": "music:replay"}
+{"id": "music_hinglish-20", "slice": "music_hinglish", "text": "kuch random gaana laga do", "expect": "music:random|music:suggest"}
+{"id": "phone_en-01", "slice": "phone_en", "text": "ring my phone", "expect": "tool:phone.ring"}
+{"id": "phone_en-02", "slice": "phone_en", "text": "stop ringing", "expect": "tool:phone.ring.stop"}
+{"id": "phone_en-03", "slice": "phone_en", "text": "find my phone", "expect": "tool:phone.ring|tool:phone.location"}
+{"id": "phone_en-04", "slice": "phone_en", "text": "where is my phone", "expect": "tool:phone.location|tool:phone.ring"}
+{"id": "phone_en-05", "slice": "phone_en", "text": "how much battery does my phone have", "expect": "tool:phone.status"}
+{"id": "phone_en-06", "slice": "phone_en", "text": "read my messages", "expect": "tool:phone.sms.read"}
+{"id": "phone_en-07", "slice": "phone_en", "text": "read my notifications", "expect": "tool:phone.notifications"}
+{"id": "phone_en-08", "slice": "phone_en", "text": "any new notifications", "expect": "tool:phone.notifications"}
+{"id": "phone_en-09", "slice": "phone_en", "text": "text mom i'll be late", "expect": "tool:phone.sms.send", "args": {"to": "mom"}}
+{"id": "phone_en-10", "slice": "phone_en", "text": "call rahul", "expect": "tool:phone.call", "args": {"to": "rahul"}}
+{"id": "phone_en-11", "slice": "phone_en", "text": "open whatsapp on my phone", "expect": "tool:phone.apps.open", "args": {"name": "whatsapp"}}
+{"id": "phone_en-12", "slice": "phone_en", "text": "turn on the torch on my phone", "expect": "tool:phone.torch", "args": {"on": true}}
+{"id": "phone_en-13", "slice": "phone_en", "text": "turn off the flashlight", "expect": "tool:phone.torch", "args": {"on": false}}
+{"id": "phone_en-14", "slice": "phone_en", "text": "put my phone on silent", "expect": "tool:phone.ringer", "args": {"mode": "silent"}}
+{"id": "phone_en-15", "slice": "phone_en", "text": "turn to ring mode", "expect": "tool:phone.ringer", "args": {"mode": "normal"}}
+{"id": "phone_en-16", "slice": "phone_en", "text": "turn off silent mode", "expect": "tool:phone.ringer", "args": {"mode": "normal"}}
+{"id": "phone_en-17", "slice": "phone_en", "text": "set my phone to vibrate", "expect": "tool:phone.ringer", "args": {"mode": "vibrate"}}
+{"id": "phone_en-18", "slice": "phone_en", "text": "turn on do not disturb", "expect": "tool:phone.dnd", "args": {"on": true}}
+{"id": "phone_en-19", "slice": "phone_en", "text": "dnd off on my phone", "expect": "tool:phone.dnd", "args": {"on": false}}
+{"id": "phone_en-20", "slice": "phone_en", "text": "set an alarm for 7 am", "expect": "tool:phone.alarm", "args": {"hour": 7, "minute": 0}}
+{"id": "phone_en-21", "slice": "phone_en", "text": "wake me up at 6:30", "expect": "tool:phone.alarm", "args": {"hour": 6, "minute": 30}}
+{"id": "phone_en-22", "slice": "phone_en", "text": "set a timer for 10 minutes", "expect": "tool:phone.timer", "args": {"seconds": 600}}
+{"id": "phone_en-23", "slice": "phone_en", "text": "timer for 30 seconds", "expect": "tool:phone.timer", "args": {"seconds": 30}}
+{"id": "phone_en-24", "slice": "phone_en", "text": "remind me in an hour", "expect": "tool:phone.timer", "args": {"seconds": 3600}}
+{"id": "phone_en-25", "slice": "phone_en", "text": "lock my phone", "expect": "tool:phone.lock"}
+{"id": "phone_en-26", "slice": "phone_en", "text": "what apps do i have on my phone", "expect": "tool:phone.apps.list"}
+{"id": "phone_en-27", "slice": "phone_en", "text": "what's on my phone clipboard", "expect": "tool:phone.clipboard.get"}
+{"id": "phone_en-28", "slice": "phone_en", "text": "what is mom's number", "expect": "tool:phone.contacts", "args": {"name": "mom"}}
+{"id": "phone_en-29", "slice": "phone_en", "text": "vibrate my phone", "expect": "tool:phone.vibrate|tool:phone.ringer"}
+{"id": "mac_en-01", "slice": "mac_en", "text": "turn off bluetooth on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "mac_en-02", "slice": "mac_en", "text": "turn on bluetooth on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "on"}}
+{"id": "mac_en-03", "slice": "mac_en", "text": "is bluetooth on on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "status"}}
+{"id": "mac_en-04", "slice": "mac_en", "text": "disable bluetooth", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "mac_en-05", "slice": "mac_en", "text": "turn off wifi on my mac", "expect": "tool:mac.wifi", "args": {"state": "off"}}
+{"id": "mac_en-06", "slice": "mac_en", "text": "switch the mac wifi on", "expect": "tool:mac.wifi", "args": {"state": "on"}}
+{"id": "mac_en-07", "slice": "mac_en", "text": "set the mac volume to 30", "expect": "tool:mac.volume|music:volume"}
+{"id": "mac_en-08", "slice": "mac_en", "text": "how much battery does my mac have", "expect": "tool:mac.status"}
+{"id": "mac_en-09", "slice": "mac_en", "text": "lock my mac", "expect": "tool:mac.lock"}
+{"id": "mac_en-10", "slice": "mac_en", "text": "put my mac to sleep", "expect": "tool:mac.sleep"}
+{"id": "mac_en-11", "slice": "mac_en", "text": "what apps are open on my mac", "expect": "tool:mac.apps"}
+{"id": "mac_en-12", "slice": "mac_en", "text": "open safari", "expect": "tool:mac.open", "args": {"app": "safari"}}
+{"id": "mac_en-13", "slice": "mac_en", "text": "open youtube.com", "expect": "tool:mac.open"}
+{"id": "mac_en-14", "slice": "mac_en", "text": "run my morning shortcut", "expect": "tool:mac.shortcut", "args": {"name": "morning"}}
+{"id": "mac_en-15", "slice": "mac_en", "text": "what's on my clipboard", "expect": "tool:mac.clipboard.get"}
+{"id": "mac_en-16", "slice": "mac_en", "text": "what did i copy on my mac", "expect": "tool:mac.clipboard.get"}
+{"id": "mac_en-17", "slice": "mac_en", "text": "show a notification saying hello", "expect": "tool:mac.notify"}
+{"id": "mac_en-18", "slice": "mac_en", "text": "what app am i in", "expect": "tool:mac.status"}
+{"id": "hinglish_tools-01", "slice": "hinglish_tools", "text": "mera phone ring karo", "expect": "tool:phone.ring"}
+{"id": "hinglish_tools-02", "slice": "hinglish_tools", "text": "phone dhundo", "expect": "tool:phone.ring|tool:phone.location"}
+{"id": "hinglish_tools-03", "slice": "hinglish_tools", "text": "phone ki battery kitni hai", "expect": "tool:phone.status"}
+{"id": "hinglish_tools-04", "slice": "hinglish_tools", "text": "mere messages padho", "expect": "tool:phone.sms.read"}
+{"id": "hinglish_tools-05", "slice": "hinglish_tools", "text": "notifications batao", "expect": "tool:phone.notifications"}
+{"id": "hinglish_tools-06", "slice": "hinglish_tools", "text": "mummy ko call karo", "expect": "tool:phone.call", "args": {"to": "mummy"}}
+{"id": "hinglish_tools-07", "slice": "hinglish_tools", "text": "rahul ko text karo ki main late hoon", "expect": "tool:phone.sms.send", "args": {"to": "rahul"}}
+{"id": "hinglish_tools-08", "slice": "hinglish_tools", "text": "torch on karo", "expect": "tool:phone.torch", "args": {"on": true}}
+{"id": "hinglish_tools-09", "slice": "hinglish_tools", "text": "torch band karo", "expect": "tool:phone.torch", "args": {"on": false}}
+{"id": "hinglish_tools-10", "slice": "hinglish_tools", "text": "phone ko silent kar do", "expect": "tool:phone.ringer", "args": {"mode": "silent"}}
+{"id": "hinglish_tools-11", "slice": "hinglish_tools", "text": "phone ko ring mode pe karo", "expect": "tool:phone.ringer", "args": {"mode": "normal"}}
+{"id": "hinglish_tools-12", "slice": "hinglish_tools", "text": "silent mode hata do", "expect": "tool:phone.ringer", "args": {"mode": "normal"}}
+{"id": "hinglish_tools-13", "slice": "hinglish_tools", "text": "dnd on karo", "expect": "tool:phone.dnd", "args": {"on": true}}
+{"id": "hinglish_tools-14", "slice": "hinglish_tools", "text": "subah 6 baje ka alarm lagao", "expect": "tool:phone.alarm", "args": {"hour": 6, "minute": 0}}
+{"id": "hinglish_tools-15", "slice": "hinglish_tools", "text": "10 minute ka timer lagao", "expect": "tool:phone.timer", "args": {"seconds": 600}}
+{"id": "hinglish_tools-16", "slice": "hinglish_tools", "text": "ek ghante baad yaad dilana", "expect": "tool:phone.timer", "args": {"seconds": 3600}}
+{"id": "hinglish_tools-17", "slice": "hinglish_tools", "text": "mac ka bluetooth band karo", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "hinglish_tools-18", "slice": "hinglish_tools", "text": "bluetooth on karo mac ka", "expect": "tool:mac.bluetooth", "args": {"state": "on"}}
+{"id": "hinglish_tools-19", "slice": "hinglish_tools", "text": "mac ka wifi band kar do", "expect": "tool:mac.wifi", "args": {"state": "off"}}
+{"id": "hinglish_tools-20", "slice": "hinglish_tools", "text": "mac ki battery kitni hai", "expect": "tool:mac.status"}
+{"id": "hinglish_tools-21", "slice": "hinglish_tools", "text": "mac lock kar do", "expect": "tool:mac.lock"}
+{"id": "hinglish_tools-22", "slice": "hinglish_tools", "text": "mac ko sleep karo", "expect": "tool:mac.sleep"}
+{"id": "hinglish_tools-23", "slice": "hinglish_tools", "text": "safari kholo", "expect": "tool:mac.open", "args": {"app": "safari"}}
+{"id": "hinglish_tools-24", "slice": "hinglish_tools", "text": "phone par whatsapp kholo", "expect": "tool:phone.apps.open", "args": {"name": "whatsapp"}}
+{"id": "hinglish_tools-25", "slice": "hinglish_tools", "text": "phone lock kar do", "expect": "tool:phone.lock"}
+{"id": "asr_noise-01", "slice": "asr_noise", "text": "play chute vol one", "expect": "music:song"}
+{"id": "asr_noise-02", "slice": "asr_noise", "text": "play shoot vol 1", "expect": "music:song"}
+{"id": "asr_noise-03", "slice": "asr_noise", "text": "pause the musik", "expect": "music:pause"}
+{"id": "asr_noise-04", "slice": "asr_noise", "text": "skip ths song", "expect": "music:next"}
+{"id": "asr_noise-05", "slice": "asr_noise", "text": "nex song", "expect": "music:next"}
+{"id": "asr_noise-06", "slice": "asr_noise", "text": "previous song please", "expect": "music:previous"}
+{"id": "asr_noise-07", "slice": "asr_noise", "text": "start the music", "expect": "music:resume"}
+{"id": "asr_noise-08", "slice": "asr_noise", "text": "what is playing right now", "expect": "music:nowPlaying"}
+{"id": "asr_noise-09", "slice": "asr_noise", "text": "plays something calm", "expect": "music:suggest"}
+{"id": "asr_noise-10", "slice": "asr_noise", "text": "volume fourty", "expect": "music:volume"}
+{"id": "asr_noise-11", "slice": "asr_noise", "text": "increase the volume", "expect": "music:volume"}
+{"id": "asr_noise-12", "slice": "asr_noise", "text": "turn off blue tooth on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "asr_noise-13", "slice": "asr_noise", "text": "turn of bluetooth on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "asr_noise-14", "slice": "asr_noise", "text": "uh turn off the uh bluetooth on my mac", "expect": "tool:mac.bluetooth", "args": {"state": "off"}}
+{"id": "asr_noise-15", "slice": "asr_noise", "text": "hey void turn off the wifi on my mac", "expect": "tool:mac.wifi", "args": {"state": "off"}}
+{"id": "asr_noise-16", "slice": "asr_noise", "text": "what's the baterry on my fone", "expect": "tool:phone.status"}
+{"id": "asr_noise-17", "slice": "asr_noise", "text": "ring my phon", "expect": "tool:phone.ring"}
+{"id": "asr_noise-18", "slice": "asr_noise", "text": "set a time for ten minutes", "expect": "tool:phone.timer", "args": {"seconds": 600}}
+{"id": "asr_noise-19", "slice": "asr_noise", "text": "set an alarm for seven a m", "expect": "tool:phone.alarm", "args": {"hour": 7, "minute": 0}}
+{"id": "asr_noise-20", "slice": "asr_noise", "text": "text mom ill be late", "expect": "tool:phone.sms.send", "args": {"to": "mom"}}
+{"id": "asr_noise-21", "slice": "asr_noise", "text": "call mum", "expect": "tool:phone.call"}
+{"id": "asr_noise-22", "slice": "asr_noise", "text": "read my massages", "expect": "tool:phone.sms.read"}
+{"id": "asr_noise-23", "slice": "asr_noise", "text": "open watsapp", "expect": "tool:phone.apps.open|tool:mac.open"}
+{"id": "asr_noise-24", "slice": "asr_noise", "text": "flash light on", "expect": "tool:phone.torch", "args": {"on": true}}
+{"id": "asr_noise-25", "slice": "asr_noise", "text": "go silent", "expect": "tool:phone.ringer", "args": {"mode": "silent"}}
+{"id": "asr_noise-26", "slice": "asr_noise", "text": "mute my fone", "expect": "tool:phone.ringer", "args": {"mode": "silent"}}
+{"id": "asr_noise-27", "slice": "asr_noise", "text": "lock my mack", "expect": "tool:mac.lock"}
+{"id": "asr_noise-28", "slice": "asr_noise", "text": "turn on the wifi on my mac please", "expect": "tool:mac.wifi", "args": {"state": "on"}}
+{"id": "chat_en-01", "slice": "chat_en", "text": "how are you", "expect": "chat"}
+{"id": "chat_en-02", "slice": "chat_en", "text": "tell me a joke", "expect": "chat"}
+{"id": "chat_en-03", "slice": "chat_en", "text": "what's the capital of france", "expect": "chat"}
+{"id": "chat_en-04", "slice": "chat_en", "text": "why is the sky blue", "expect": "chat"}
+{"id": "chat_en-05", "slice": "chat_en", "text": "who are you", "expect": "chat"}
+{"id": "chat_en-06", "slice": "chat_en", "text": "i'm feeling tired today", "expect": "chat"}
+{"id": "chat_en-07", "slice": "chat_en", "text": "tell me something interesting", "expect": "chat"}
+{"id": "chat_en-08", "slice": "chat_en", "text": "what is bluetooth", "expect": "chat"}
+{"id": "chat_en-09", "slice": "chat_en", "text": "how does wifi work", "expect": "chat"}
+{"id": "chat_en-10", "slice": "chat_en", "text": "my phone is so slow lately", "expect": "chat"}
+{"id": "chat_en-11", "slice": "chat_en", "text": "i hate mondays", "expect": "chat"}
+{"id": "chat_en-12", "slice": "chat_en", "text": "explain how a battery works", "expect": "chat"}
+{"id": "chat_en-13", "slice": "chat_en", "text": "what's the best way to learn swift", "expect": "chat"}
+{"id": "chat_en-14", "slice": "chat_en", "text": "should i call my mom more often", "expect": "chat"}
+{"id": "chat_en-15", "slice": "chat_en", "text": "write a short poem", "expect": "chat"}
+{"id": "chat_en-16", "slice": "chat_en", "text": "good morning", "expect": "chat"}
+{"id": "chat_en-17", "slice": "chat_en", "text": "thanks", "expect": "chat"}
+{"id": "chat_en-18", "slice": "chat_en", "text": "i'm bored", "expect": "chat"}
+{"id": "chat_en-19", "slice": "chat_en", "text": "what time is it", "expect": "chat"}
+{"id": "chat_en-20", "slice": "chat_en", "text": "tell me a fun fact", "expect": "chat"}
+{"id": "chat_en-21", "slice": "chat_en", "text": "is a torch the same as a flashlight", "expect": "chat"}
+{"id": "chat_en-22", "slice": "chat_en", "text": "play a game with me", "expect": "chat"}
+{"id": "chat_en-23", "slice": "chat_en", "text": "what does volume mean in finance", "expect": "chat"}
+{"id": "chat_en-24", "slice": "chat_en", "text": "i'm stressed about exams", "expect": "chat"}
+{"id": "chat_en-25", "slice": "chat_en", "text": "what should i eat tonight", "expect": "chat"}
+{"id": "chat_en-26", "slice": "chat_en", "text": "what's the difference between a mac and a pc", "expect": "chat"}
+{"id": "chat_en-27", "slice": "chat_en", "text": "my mac feels slow", "expect": "chat"}
+{"id": "chat_en-28", "slice": "chat_en", "text": "do you like music", "expect": "chat"}
+{"id": "chat_en-29", "slice": "chat_en", "text": "tell me about the song shape of you", "expect": "chat"}
+{"id": "chat_en-30", "slice": "chat_en", "text": "who wrote the song bohemian rhapsody", "expect": "chat"}
+{"id": "chat_hinglish-01", "slice": "chat_hinglish", "text": "kya haal hai", "expect": "chat"}
+{"id": "chat_hinglish-02", "slice": "chat_hinglish", "text": "mujhe neend aa rahi hai", "expect": "chat"}
+{"id": "chat_hinglish-03", "slice": "chat_hinglish", "text": "aaj ka din bahut bura tha", "expect": "chat"}
+{"id": "chat_hinglish-04", "slice": "chat_hinglish", "text": "ek joke sunao", "expect": "chat"}
+{"id": "chat_hinglish-05", "slice": "chat_hinglish", "text": "tum kaun ho", "expect": "chat"}
+{"id": "chat_hinglish-06", "slice": "chat_hinglish", "text": "mujhe kuch motivate karo", "expect": "chat"}
+{"id": "chat_hinglish-07", "slice": "chat_hinglish", "text": "bluetooth kya hota hai", "expect": "chat"}
+{"id": "chat_hinglish-08", "slice": "chat_hinglish", "text": "mera mood off hai", "expect": "chat"}
+{"id": "chat_hinglish-09", "slice": "chat_hinglish", "text": "padhai mein mann nahi lag raha", "expect": "chat"}
+{"id": "chat_hinglish-10", "slice": "chat_hinglish", "text": "kal ka plan kya banau", "expect": "chat"}
+{"id": "chat_hinglish-11", "slice": "chat_hinglish", "text": "phone mein kya kya features hote hain", "expect": "chat"}
+{"id": "chat_hinglish-12", "slice": "chat_hinglish", "text": "mujhe khana kya banana chahiye", "expect": "chat"}
+{"id": "chat_hinglish-13", "slice": "chat_hinglish", "text": "arijit singh kaun hai", "expect": "chat"}
+{"id": "chat_hinglish-14", "slice": "chat_hinglish", "text": "mummy ko kya gift dun", "expect": "chat"}
+{"id": "ambiguous-01", "slice": "ambiguous", "text": "i'm feeling sad", "expect": "chat|music:suggest"}
+{"id": "ambiguous-02", "slice": "ambiguous", "text": "i need to focus", "expect": "chat|music:suggest"}
+{"id": "ambiguous-03", "slice": "ambiguous", "text": "play something", "expect": "music:suggest"}
+{"id": "ambiguous-04", "slice": "ambiguous", "text": "stop", "expect": "music:pause"}
+{"id": "ambiguous-05", "slice": "ambiguous", "text": "turn it down", "expect": "music:volume"}
+{"id": "ambiguous-06", "slice": "ambiguous", "text": "turn it up", "expect": "music:volume"}
+{"id": "ambiguous-07", "slice": "ambiguous", "text": "turn it off", "expect": "chat|music:pause"}
+{"id": "ambiguous-08", "slice": "ambiguous", "text": "text mom", "expect": "tool:phone.sms.send|tool:phone.call|chat"}
+{"id": "ambiguous-09", "slice": "ambiguous", "text": "call", "expect": "chat"}
+{"id": "ambiguous-10", "slice": "ambiguous", "text": "what's the volume", "expect": "chat|music:volume|tool:mac.volume"}
+{"id": "ambiguous-11", "slice": "ambiguous", "text": "open it", "expect": "chat"}
+{"id": "ambiguous-12", "slice": "ambiguous", "text": "do it again", "expect": "chat|music:replay"}
+{"id": "ambiguous-13", "slice": "ambiguous", "text": "battery", "expect": "tool:phone.status|tool:mac.status|chat"}
+{"id": "ambiguous-14", "slice": "ambiguous", "text": "what's up with my phone", "expect": "chat|tool:phone.status"}
+{"id": "ambiguous-15", "slice": "ambiguous", "text": "silent", "expect": "tool:phone.ringer|chat"}
